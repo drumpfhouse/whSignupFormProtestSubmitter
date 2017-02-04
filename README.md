@@ -10,7 +10,7 @@ This script requires Python and the following modules:
 - random
 - time
 
-The latter to are part of the Python Standard Libary.  The Requests module you'll have to install yourself.  Directions for that can be found on the Requests site.
+The latter two are part of the Python Standard Libary.  The Requests module you'll have to install yourself.  Directions for that can be found on the Requests site.
 
 # Usage
 The easiest thing to do is run whSignupFormProtestSubmitter from the command line
