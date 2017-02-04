@@ -1,5 +1,7 @@
+import getopt
 import requests
 import random
+import sys
 import time
 
 def _buildFakeEmailAddress():
@@ -89,12 +91,28 @@ def sendProtestSubmission(email):
 
 
 def fireTehLazers(iterations=5):
+
     for i in range(0,iterations):
         email = _buildFakeEmailAddress()
         result = sendProtestSubmission(email)
         sleepTime = random.randint(1,30)
-        print(str(i) + " of " + str(iterations) + ": " + email + ", result code: " + str(result) + ". Next post in " + str(sleepTime) + " seconds.")
+        print(str(i + 1) + " of " + str(iterations) + ": " + email + ", result code: " + str(result) + ". Next post in " + str(sleepTime) + " seconds.")
         time.sleep(sleepTime)
 
+
+def main(args):
+    try:
+        opts, args = getopt.getopt(args, "hi:", ["iterations=", "help"])
+    except getopt.GetoptError:
+        print('whSignupFormProtestSubmitter.py -i <number_of_submissions>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt in ("-i", "--iterations") and isinstance(int(arg), int ):
+            iterations = int(arg)
+            fireTehLazers(iterations)
+        else:
+            print('whSignupFormProtestSubmitter.py -i <number_of_submissions>')
+            sys.exit(2)
+
 if __name__ == '__main__':
-    fireTehLazers(50)
+    main(sys.argv[1:])
