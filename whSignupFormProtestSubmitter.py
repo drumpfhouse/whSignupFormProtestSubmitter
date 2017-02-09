@@ -80,6 +80,15 @@ def _buildName():
     return (random.choice(fnames), random.choice(lnames))
 
 
+def _buildZipCode():
+    zipDigits = []
+
+    for i in range(0,5):
+        zipDigits.append(str(random.randint(0,9)))
+
+    return ''.join(zipDigits)
+
+
 def _buildFakeEmailAddress():
     domains = [
         'trump.com',
@@ -171,7 +180,7 @@ def frontPageForm():
 
         dataPayload = {
             "submitted[email_address]": _buildFakeEmailAddress(),
-            "submitted[zip_code]": "12345",
+            "submitted[zip_code]": _buildZipCode(),
             "form_id": "webform_client_form_111",
             "form_build_id": "form-43X7sWhYGJ1EdVKeroNYk0M2Wnv7I-Bp4qrOtulPg6A"
         }
@@ -187,7 +196,7 @@ def gorsuchForm():
         "submitted[first_name]": fname,
         "submitted[last_name]": lname,
         "submitted[e_mail_address]": _buildFakeEmailAddress(),
-        "submitted[zip_code]": "12345",
+        "submitted[zip_code]": _buildZipCode(),
         "form_id": "webform_client_form_106",
         "form_build_id": "form-sZV-iGQZ-ZjG8D9H_5SGIZfBSBEsGfiLx-mjVrXt20E"
     }
@@ -203,7 +212,7 @@ def workForm():
         "submitted[first_name]": fname,
         "submitted[last_name]": lname,
         "submitted[email_address]": _buildFakeEmailAddress(),
-        "submitted[zip_code]": "12345",
+        "submitted[zip_code]": _buildZipCode(),
         "form_id": "webform_client_form_141",
         "form_build_id": "form-6kxJzAO-R2p9ejec8AywNsveIW9AnRlHbM1v19Gp2Ug"
     }
