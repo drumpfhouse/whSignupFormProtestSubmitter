@@ -90,14 +90,19 @@ def _buildZipCode():
     return ''.join(zipDigits)
 
 
-def _buildFakeEmailAddress():
+def _buildFakeEmailAddress(fname=None, lname=None):
+
     domains = [
+        'gmail.com',
+        'yahoo.com',
+        'hotmail.com',
         'trump.com',
         'trumpinternaltionalrealty.com',
         'donaldjtrump.com',
         'trumporg.com',
         'trumpuniversity.com',
         'tmgmt.com',
+        'juno.com',
         '10minutemail.com',
         'eelmail.com',
         'einrot.com',
@@ -134,6 +139,8 @@ def _buildFakeEmailAddress():
         'zxcvbnm.co.uk',
         'whitehouse.gov',
         'state.gov',
+        'fcc.gov',
+        'dot.gov',
         'irs.gov',
         'epa.gov',
         'gop.com',
@@ -141,7 +148,19 @@ def _buildFakeEmailAddress():
         'navy.mil',
         'af.mil',
         'congress.gov',
-        'senate.gov'
+        'senate.gov',
+        'outlook.com',
+        'kgb.net',
+        'kkk.org',
+        'aol.com',
+        'live.com',
+        'verizon.com',
+        'earthlink.net',
+        'comcast.net',
+        'infowars.com',
+        'naturalnews.com',
+        'mindspring.com',
+        'russianhookers.net'
     ]
 
     localParts = [
@@ -171,14 +190,49 @@ def _buildFakeEmailAddress():
         'gorsucks',
         'de.voss',
         'donaldtrumpmakesmewannasmokecrack',
-        'formsarenotpetitions'
+        'formsarenotpetitions',
+        'refuse',
+        'resist',
+        'nonserviam',
+        'vlad',
+        'bvdobbs',
+        'usck',
+        'lies',
+        'damnlies',
+        'whathappenedtodrainingtheswamp',
+        'yourwallisstupidandsoareyou'
     ]
 
-    return str.join('', [random.choice(localParts), '@', random.choice(domains)])
+    if fname and lname:
+        # this basically creates a random boolean
+        if random.randint(0,4):
+            local = _generateEmailLocalFromName(fname, lname)
+        else:
+            local = random.choice(localParts)
+    else:
+        local = random.choice(localParts)
+
+    address = str.join('', [local, '@', random.choice(domains)]).lower()
+
+    print("Generated " + address)
+
+    return address
+
+
+def _generateEmailLocalFromName(fname, lname):
+    r = random.randint(1, 3)
+    if r == 1:
+        local = str.join('', [fname[0], lname])
+    elif r == 2:
+        local = str.join('_', [fname, lname])
+    else:
+        local = str.join('.', [fname, lname])
+
+    return local
 
 
 def frontPageForm():
-    targetURL = 'https://forms.whitehouse.gov/webform/email-signup'
+    targetURL = 'https://forms.whitehouse.gov/webform/email-signup?initialWidth=544&childId=forall-iframe-embed-1&parentUrl=https%3A%2F%2Fwww.whitehouse.gov'
 
     dataPayload = {
         "submitted[email_address]": _buildFakeEmailAddress(),
@@ -191,7 +245,7 @@ def frontPageForm():
 
 
 def gorsuchForm():
-    targetURL = 'https://forms.whitehouse.gov/webform/scotus-form'
+    targetURL = 'https://forms.whitehouse.gov/webform/scotus-form?initialWidth=544&childId=forall-iframe-embed-1&parentUrl=https%3A%2F%2Fwww.whitehouse.gov%2Fsupport-nominee-gorsuch'
 
     fname, lname = _buildName()
 
@@ -208,14 +262,14 @@ def gorsuchForm():
 
 
 def israelForm():
-    targetURL = 'https://forms.whitehouse.gov/webform/trump-stands-with-israel'
+    targetURL = 'https://forms.whitehouse.gov/webform/trump-stands-with-israel?initialWidth=544&childId=forall-iframe-embed-1&parentUrl=https%3A%2F%2Fwww.whitehouse.gov%2Ftrump-stands-with-israel'
 
     fname, lname = _buildName()
 
     dataPayload = {
         "submitted[first_name]": fname,
         "submitted[last_name]": lname,
-        "submitted[e_mail_address]": _buildFakeEmailAddress(),
+        "submitted[email]": _buildFakeEmailAddress(),
         "submitted[zip_code]": _buildZipCode(),
         "form_id": "webform_client_form_176",
         "form_build_id": "form-zsH6jltzBOSHwMFO5DyO0Ki9DSVWIjxVSxLydxlsSd0"
@@ -225,14 +279,14 @@ def israelForm():
 
 
 def womenForm():
-    targetURL = 'https://forms.whitehouse.gov/webform/empowering-female-leaders'
+    targetURL = 'https://forms.whitehouse.gov/webform/empowering-female-leaders?initialWidth=544&childId=forall-iframe-embed-1&parentUrl=https%3A%2F%2Fwww.whitehouse.gov%2Fsupport-empowering-female-leaders'
 
     fname, lname = _buildName()
 
     dataPayload = {
         "submitted[first_name]": fname,
         "submitted[last_name]": lname,
-        "submitted[e_mail_address]": _buildFakeEmailAddress(),
+        "submitted[email]": _buildFakeEmailAddress(),
         "submitted[zip_code]": _buildZipCode(),
         "form_id": "webform_client_form_166",
         "form_build_id": "form-NqsMkzEZaaDlyQrTXOKzDh1K-R60re0e1pglFMgWIR4"
@@ -241,7 +295,7 @@ def womenForm():
     return {'targetURL': targetURL, 'dataPayload': dataPayload}
 
 def workForm():
-    targetURL = 'https://forms.whitehouse.gov/webform/get-involved'
+    targetURL = 'https://forms.whitehouse.gov/webform/get-involved?initialWidth=544&childId=forall-iframe-embed-1&parentUrl=https%3A%2F%2Fwww.whitehouse.gov%2Fsupport-american-back-to-work'
 
     fname, lname = _buildName()
 
@@ -256,11 +310,72 @@ def workForm():
 
     return {'targetURL': targetURL, 'dataPayload': dataPayload}
 
+def jointAddressForm():
+    targetURL = 'https://forms.whitehouse.gov/webform/joint-address-congress-2017-signup?initialWidth=544&childId=forall-iframe-embed-1&parentUrl=https%3A%2F%2Fwww.whitehouse.gov%2Fjoint-address'
+
+    fname, lname = _buildName()
+
+    dataPayload = {
+        "submitted[first_name]": fname + ' ' + lname,
+        "submitted[email_address]": _buildFakeEmailAddress(fname, lname),
+        "submitted[zip_code]": _buildZipCode(),
+        "form_id": "webform_client_form_196",
+        "form_build_id": "form-6kxJzAO-R2p9ejec8AywNsveIW9AnRlHbM1v19Gp2Ug"
+    }
+
+    return {'targetURL': targetURL, 'dataPayload': dataPayload}
+
+
+def _buildMAGIdea():
+
+    return "Remove Donald Drumpf from office."
+
+
+def _buildState():
+
+    return "District of Columbia"
+
+def _buildCountry():
+
+    return "United States"
+
+def _buildComment():
+
+    return "No matter how much money or power you have, Donald, she still won't love you."
+
+def issueSurveyForm():
+    targetURL = 'https://forms.whitehouse.gov/webform/joint-address-issues-survey?initialWidth=544&childId=forall-iframe-embed-1&parentUrl=https%3A%2F%2Fwww.whitehouse.gov%2Fjoint-address-issues-survey'
+
+    fname, lname = _buildName()
+
+    dataPayload = {
+        "submitted[3_what_are_your_ideas_to_mae_america_great_again]": _buildMAGIdea(),
+        "submitted[first_name]": fname,
+        "submitted[last_name]": lname,
+        "submitted[email_address]": _buildFakeEmailAddress(),
+        "submitted[zip_code]": _buildZipCode(),
+        "submitted[country]": _buildCountry(),
+        "submitted[state]": _buildState(),
+        "submitted[4_additional_comments]": _buildComment(),
+        "form_id": "webform_client_form_206",
+        "form_build_id": "form-qzHYQwgCHonDYAAgpQMnllOIuqyMGDPKddwUtJjp4LI"
+    }
+
+    return {'targetURL': targetURL, 'dataPayload': dataPayload}
+
+def _buildUserAgent():
+    agents = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
+    ]
+    return random.choice(agents)
 
 def sendProtestSubmission(form):
     data = form()
     try:
-        r = requests.post(data['targetURL'], data=data['dataPayload'])
+        r = requests.post(data['targetURL'], headers={'User-agent': _buildUserAgent()}, data=data['dataPayload'])
     except Exception as err:
         print("Woops.  Something went sideways. " + err)
 
@@ -274,13 +389,15 @@ def fireTehLazers(iterations=5):
             gorsuchForm,
             workForm,
             israelForm,
-            womenForm
+            womenForm,
+            issueSurveyForm,
+            jointAddressForm
         ]
 
         form = random.choice(forms)
 
         result = sendProtestSubmission(form)
-        sleepTime = random.randint(1, 10)
+        sleepTime = random.randint(1, 600)
         print(str(i + 1) + " of " + str(iterations) + ": " + form.__name__ + ", result code: " + str(
             result) + ". Next post in " + str(sleepTime) + " seconds.")
         time.sleep(sleepTime)
