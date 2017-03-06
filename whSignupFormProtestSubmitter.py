@@ -34,7 +34,16 @@ def _buildName():
         'Warren',
         'William',
         'Woodrow',
-        'Zachary'
+        'Zachary',
+        'Ben',
+        'Chanice',
+        'Apu',
+        'Diego',
+        'Saka',
+        'Sasha',
+        'Steven',
+        'Thomas',
+        'Freddy'
     ]
 
     lnames = [
@@ -75,7 +84,14 @@ def _buildName():
         'Tyler',
         'VanBuren',
         'Washington',
-        'Wilson'
+        'Wilson',
+        'Mercury',
+        'Jones',
+        'Doofenschmirtz',
+        'Jabutie',
+        'Dobbs',
+        'Villalobos',
+        'Nguyen'
     ]
 
     return (random.choice(fnames), random.choice(lnames))
@@ -160,7 +176,15 @@ def _buildFakeEmailAddress(fname=None, lname=None):
         'infowars.com',
         'naturalnews.com',
         'mindspring.com',
-        'russianhookers.net'
+        'russianhookers.net',
+        'bosley.com',
+        'hairclub.com',
+        'sweet-escort.ru',
+        'exxon.com',
+        'ethics.house.gov',
+        'ethics.senate.gov',
+        'brietbart.com',
+        'foxnews.com'
     ]
 
     localParts = [
@@ -205,7 +229,10 @@ def _buildFakeEmailAddress(fname=None, lname=None):
 
     if fname and lname:
         # this basically creates a random boolean
-        if random.randint(0,4):
+        # by increasing or decreasing the range we can change
+        # the percentage that use a realistic local part vs
+        # a clearly spammy local part
+        if random.randint(0,3):
             local = _generateEmailLocalFromName(fname, lname)
         else:
             local = random.choice(localParts)
@@ -220,11 +247,15 @@ def _buildFakeEmailAddress(fname=None, lname=None):
 
 
 def _generateEmailLocalFromName(fname, lname):
-    r = random.randint(1, 3)
+    r = random.randint(1, 5)
     if r == 1:
         local = str.join('', [fname[0], lname])
     elif r == 2:
         local = str.join('_', [fname, lname])
+    elif r == 3:
+        local = str.join('', [lname, fname[0], str(random.randint(1,100))])
+    elif r == 4:
+        local = str.join('', [fname[0], lname[0], str(random.randint(1,100))])
     else:
         local = str.join('.', [fname, lname])
 
@@ -252,7 +283,7 @@ def gorsuchForm():
     dataPayload = {
         "submitted[first_name]": fname,
         "submitted[last_name]": lname,
-        "submitted[e_mail_address]": _buildFakeEmailAddress(),
+        "submitted[e_mail_address]": _buildFakeEmailAddress(fname, lname),
         "submitted[zip_code]": _buildZipCode(),
         "form_id": "webform_client_form_106",
         "form_build_id": "form-sZV-iGQZ-ZjG8D9H_5SGIZfBSBEsGfiLx-mjVrXt20E"
@@ -269,7 +300,7 @@ def israelForm():
     dataPayload = {
         "submitted[first_name]": fname,
         "submitted[last_name]": lname,
-        "submitted[email]": _buildFakeEmailAddress(),
+        "submitted[email]": _buildFakeEmailAddress(fname, lname),
         "submitted[zip_code]": _buildZipCode(),
         "form_id": "webform_client_form_176",
         "form_build_id": "form-zsH6jltzBOSHwMFO5DyO0Ki9DSVWIjxVSxLydxlsSd0"
@@ -286,7 +317,7 @@ def womenForm():
     dataPayload = {
         "submitted[first_name]": fname,
         "submitted[last_name]": lname,
-        "submitted[email]": _buildFakeEmailAddress(),
+        "submitted[email]": _buildFakeEmailAddress(fname, lname),
         "submitted[zip_code]": _buildZipCode(),
         "form_id": "webform_client_form_166",
         "form_build_id": "form-NqsMkzEZaaDlyQrTXOKzDh1K-R60re0e1pglFMgWIR4"
@@ -302,7 +333,7 @@ def workForm():
     dataPayload = {
         "submitted[first_name]": fname,
         "submitted[last_name]": lname,
-        "submitted[email_address]": _buildFakeEmailAddress(),
+        "submitted[email_address]": _buildFakeEmailAddress(fname, lname),
         "submitted[zip_code]": _buildZipCode(),
         "form_id": "webform_client_form_141",
         "form_build_id": "form-6kxJzAO-R2p9ejec8AywNsveIW9AnRlHbM1v19Gp2Ug"
@@ -352,7 +383,7 @@ def issueSurveyForm():
         "submitted[3_what_are_your_ideas_to_mae_america_great_again]": _buildMAGIdea(),
         "submitted[first_name]": fname,
         "submitted[last_name]": lname,
-        "submitted[email_address]": _buildFakeEmailAddress(),
+        "submitted[email_address]": _buildFakeEmailAddress(fname, lname),
         "submitted[zip_code]": _buildZipCode(),
         "submitted[country]": _buildCountry(),
         "submitted[state]": _buildState(),
@@ -362,6 +393,27 @@ def issueSurveyForm():
     }
 
     return {'targetURL': targetURL, 'dataPayload': dataPayload}
+
+def jsocExitForm():
+    targetURL = 'https://forms.whitehouse.gov/webform/2017-joint-address-exit-survey?initialWidth=544&childId=forall-iframe-embed-1&parentUrl=https%3A%2F%2Fwww.whitehouse.gov%2Fjoint-address-exit-survey'
+
+    fname, lname = _buildName()
+
+    dataPayload = {
+        "submitted[4_what_new_policies_would_you_like_to_see_put_in_place]": "I'd like to see you impeached and maybe deported.",
+        "submitted[5_additional_comments]": "You are just terrible; the absolute worst.",
+        "submitted[first_name]": fname,
+        "submitted[last_name]": lname,
+        "submitted[email_address]": _buildFakeEmailAddress(fname, lname),
+        "submitted[zip_code]": _buildZipCode(),
+        "submitted[country]": _buildCountry(),
+        "submitted[state]": _buildState(),
+        "form_id": "webform_client_form_236",
+        "form_build_id": "form-lrFKhiQ7Knpl-zz3iCUdj5dZqBb6FMpxiU2i98yzy6c"
+    }
+
+    return {'targetURL': targetURL, 'dataPayload': dataPayload}
+
 
 def _buildUserAgent():
     agents = [
@@ -391,13 +443,14 @@ def fireTehLazers(iterations=5):
             israelForm,
             womenForm,
             issueSurveyForm,
-            jointAddressForm
+            jointAddressForm,
+            jsocExitForm
         ]
 
         form = random.choice(forms)
 
         result = sendProtestSubmission(form)
-        sleepTime = random.randint(1, 600)
+        sleepTime = random.randint(1, 420)
         print(str(i + 1) + " of " + str(iterations) + ": " + form.__name__ + ", result code: " + str(
             result) + ". Next post in " + str(sleepTime) + " seconds.")
         time.sleep(sleepTime)
